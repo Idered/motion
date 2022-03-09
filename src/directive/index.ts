@@ -61,11 +61,11 @@ export const directive = (
     bind: register,
     unbind: unregister,
     // Vue 3 SSR
-    getSSRProps(binding) {
-      const { initial = {} } = binding.value
+    getSSRProps(binding, node) {
+      const { initial } = binding.value || node?.props || {}
 
       // No initial
-      if (!initial || Object.keys(initial).length === 0) return
+      if (!initial || Object.keys(initial).length === 0) return {}
 
       // Split values between `transform` and `style`
       const { transform: _transform, style: _style } = splitValues(initial)

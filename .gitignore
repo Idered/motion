@@ -1,6 +1,5 @@
 # Library
 node_modules
-dist
 
 # Tests
 coverage
