@@ -1,3 +1,57 @@
+
+<script setup="props" lang="ts">
+import { nextTick, ref, watch } from 'vue'
+import { useMotion } from '@vueuse/motion'
+import type { MotionVariants } from '@vueuse/motion'
+import { slugify } from '../../../src/utils/slugify'
+
+const props = defineProps({
+  name: {
+    type: String,
+  },
+  preset: {
+    type: Object,
+  },
+})
+
+const isReplaying = ref(false)
+const replayButton = ref<SVGElement>()
+const demoElement = ref<HTMLElement>()
+
+const { apply, set } = useMotion(demoElement, props.preset)
+
+const replayInstance = useMotion(replayButton, {
+  initial: {
+    rotate: 0,
+  },
+})
+
+const replay = async() => {
+  if (isReplaying.value) return
+
+  isReplaying.value = true
+
+  replayInstance.apply({
+    rotate: 360,
+  })
+
+  await apply(props.preset.initial)
+
+  if (props.preset.visible)
+    await apply(props.preset.visible)
+
+  if (props.preset.visibleOnce)
+    await apply(props.preset.visibleOnce)
+
+  if (props.preset.enter)
+    await apply(props.preset.enter)
+
+  replayInstance.set({ rotate: 0 })
+
+  isReplaying.value = false
+}
+</script>
+
 <template>
   <div class="presetSection">
     <h2 style="text-transform: capitalize">
@@ -19,7 +73,7 @@
           <path
             d="M171 91q70 0 120 50t50 120.5T291 382t-120.5 50T50 382T0 261h43q0 53 37.5 90.5T171 389t90.5-37.5T299 261t-37.5-90.5T171 133v86L64 112L171 5v86z"
             style="fill: var(--c-text)"
-          ></path>
+          />
         </svg>
       </button>
     </h2>
@@ -51,58 +105,6 @@
     </div>
   </div>
 </template>
-
-<script setup="props" lang="ts">
-import { ref, nextTick, watch } from 'vue'
-import { useMotion } from '@vueuse/motion'
-import type { MotionVariants } from '@vueuse/motion'
-import { slugify } from '../../../src/utils/slugify'
-
-const { preset, name } = defineProps({
-  name: {
-    type: String,
-  },
-  preset: {
-    type: Object,
-  },
-})
-
-const isReplaying = ref(false)
-const replayButton = ref<SVGElement>()
-const demoElement = ref<HTMLElement>()
-
-const { apply, set } = useMotion(demoElement, preset)
-
-const replayInstance = useMotion(replayButton, {
-  initial: {
-    rotate: 0,
-  },
-})
-
-const replay = async () => {
-  if (isReplaying.value) return
-
-  isReplaying.value = true
-
-  replayInstance.apply({
-    rotate: 360,
-  })
-
-  await apply(preset.initial)
-
-  if (preset.visible) {
-    await apply(preset.visible)
-  }
-
-  if (preset.enter) {
-    await apply(preset.enter)
-  }
-
-  replayInstance.set({ rotate: 0 })
-
-  isReplaying.value = false
-}
-</script>
 
 <style scoped>
 .presetSection {

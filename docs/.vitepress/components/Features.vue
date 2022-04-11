@@ -1,46 +1,4 @@
-<template>
-  <ClientOnly>
-    <div class="home-features">
-      <div class="wrapper">
-        <div class="container">
-          <div class="features">
-            <section
-              v-for="(feature, index) in features"
-              v-motion="{
-                initial: {
-                  y: 200,
-                  opacity: 0,
-                },
-                enter: {
-                  y: 0,
-                  opacity: 1,
-                  transition: {
-                    delay: index * 100
-                  }
-                }
-              }"
-              :key="index"
-              class="feature"
-            >
-              <h2 class="title" v-if="feature.title">
-                <span role="img">{{ feature.icon }}</span>
-                {{ feature.title }}
-              </h2>
-              <p
-                class="details"
-                v-if="feature.details"
-                v-html="feature.details"
-              />
-            </section>
-          </div>
-        </div>
-      </div>
-    </div>
-  </ClientOnly>
-</template>
-
 <script lang="ts">
-import { useMotion } from '@vueuse/motion'
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
@@ -70,6 +28,47 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <ClientOnly>
+    <div class="home-features">
+      <div class="wrapper">
+        <div class="container">
+          <div class="features">
+            <section
+              v-for="(feature, index) in features"
+              :key="index"
+              v-motion="{
+                initial: {
+                  y: 200,
+                  opacity: 0,
+                },
+                enter: {
+                  y: 0,
+                  opacity: 1,
+                  transition: {
+                    delay: index * 100
+                  }
+                }
+              }"
+              class="feature"
+            >
+              <h2 v-if="feature.title" class="title">
+                <span role="img">{{ feature.icon }}</span>
+                {{ feature.title }}
+              </h2>
+              <p
+                v-if="feature.details"
+                class="details"
+                v-html="feature.details"
+              />
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ClientOnly>
+</template>
 
 <style scoped>
 .home-features {

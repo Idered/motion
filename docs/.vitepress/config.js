@@ -53,6 +53,10 @@ export default {
             link: '/installation',
           },
           {
+            text: 'Nuxt Usage',
+            link: '/nuxt',
+          },
+          {
             text: 'Quick Start',
             link: '/quick-start',
           },
@@ -141,6 +145,14 @@ export default {
           {
             text: 'useElementTransform',
             link: '/api/use-element-transform',
+          },
+          {
+            text: 'reactiveStyle',
+            link: '/api/reactive-style',
+          },
+          {
+            text: 'reactiveTransform',
+            link: '/api/reactive-transform',
           },
         ],
       },
